@@ -14,7 +14,7 @@ public class InventoryServer {
 	private boolean isRunning = true;
 	private final int POOL_SIZE = 6;
 
-	public void run() throws InterruptedException {
+	public void run()  {
 		ExecutorService executorService = Executors.newFixedThreadPool(POOL_SIZE);
 		
 		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -28,16 +28,10 @@ public class InventoryServer {
 			e.printStackTrace();
 		}finally {
 			executorService.shutdown();
-			executorService.awaitTermination(50, TimeUnit.SECONDS);
 		}
 	}
 
 	public void stop() {
 		isRunning = false;
-	}
-	
-	public static void main(String[] args) throws InterruptedException {
-		InventoryServer server = new InventoryServer();
-		server.run();
 	}
 }

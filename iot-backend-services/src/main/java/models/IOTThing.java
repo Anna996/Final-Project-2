@@ -1,32 +1,39 @@
 package models;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 public class IOTThing extends Hardware {
 
+	private final UUID ID;
 	private List<Device> devices;
-	private boolean isRunning = true;
-	private final int M_SECONDS = 20000;
-	private final String SERVER_NAME = "localhost";
-	private final int SERVER_PORT = 8090;
-	private Gson gson = new Gson();
+	private final int MAX_DEVICES = 2;
+	private final String UUID_NAME = "Thing";
+	private static int counter = 0;
 
 	public IOTThing() {
 		super();
+		this.ID = genarateUUID();
 		devices = new ArrayList<Device>();
 	}
 
 	public IOTThing(Type type, String model, String manufacturer) {
 		super(type, model, manufacturer);
+		this.ID = genarateUUID();
 		devices = new ArrayList<Device>();
+	}
+
+	// TODO fix the bug
+	private synchronized UUID genarateUUID() {
+		String name = UUID_NAME + counter++;
+		return UUID.nameUUIDFromBytes(name.getBytes());
+	}
+
+	public UUID getID() {
+		return ID;
 	}
 
 	public List<Device> getDevices() {
@@ -41,47 +48,47 @@ public class IOTThing extends Hardware {
 		devices.add(device);
 	}
 
-	public void start() {
-		while (isRunning) {
-			createReport();
-			transmitReport();
-			sleep();
-		}
-	}
+	public void simulateInventoryChange() {
+		Random random = new Random();
+		boolean toAdd = random.nextBoolean();
+		int numOFDevices;
 
-	private void createReport() {
+		if (toAdd) {
+			numOFDevices = 1 + random.nextInt(MAX_DEVICES);
+			for (int i = 0; i < numOFDevices; i++) {
+				devices.add(new Device());
+				System.out.println("added");
+			}
+		} else {
+			numOFDevices = 1 + random.nextInt(devices.size() - 1);
+			for (int i = 0; i < numOFDevices; i++) {
+				devices.remove(i);
+				System.out.println("removed");
+			}
+		}
+
 		devices.forEach(Device::simulateReading);
-
-	}
-
-	private void transmitReport() {
-		try (Socket socket = new Socket(SERVER_NAME, SERVER_PORT);
-				PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
-
-			writer.write(gson.toJson(this));
-			System.out.println("Report sent");
-
-		} catch (IOException e) {
-			System.err.println("Socket failed");
-			e.printStackTrace();
-		}
-	}
-
-	private void sleep() {
-		try {
-			Thread.sleep(M_SECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void stop() {
-		isRunning = false;
 	}
 
 	@Override
 	public String toString() {
-		return "IOTThing " + super.toString() + "[devices=" + devices + ", isRunning=" + isRunning + ", M_SECONDS="
-				+ M_SECONDS + "]";
+		return "IOTThing: [ID=" + ID + "] - " + super.toString() + ", devices=" + devices + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ID);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IOTThing other = (IOTThing) obj;
+		return Objects.equals(ID, other.ID);
 	}
 }

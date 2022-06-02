@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ajbc.webservice.rest</groupId>
-	<artifactId>api-demo</artifactId>
+	<artifactId>iot-backend-services</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api-demo</name>
+	<name>iot-backend-services</name>
 
 	<build>
-		<finalName>api-demo</finalName>
+		<finalName>iot-backend-services</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

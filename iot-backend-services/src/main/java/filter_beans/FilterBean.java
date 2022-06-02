@@ -1,19 +1,16 @@
-package models;
+package filter_beans;
 
-public abstract class Hardware {
+import jakarta.ws.rs.QueryParam;
+import models.Type;
 
+public class FilterBean {
+
+	@QueryParam("type")
 	private Type type;
+	@QueryParam("model")
 	private String model;
+	@QueryParam("manufacturer")
 	private String manufacturer;
-
-	public Hardware() {
-	}
-
-	public Hardware(Type type, String model, String manufacturer) {
-		this.type = type;
-		this.model = model;
-		this.manufacturer = manufacturer;
-	}
 
 	public Type getType() {
 		return type;
@@ -37,10 +34,5 @@ public abstract class Hardware {
 
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
-	}
-
-	@Override
-	public String toString() {
-		return "Hardware [type=" + type + ", model=" + model + ", manufacturer=" + manufacturer + "]";
 	}
 }
