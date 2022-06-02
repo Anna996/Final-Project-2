@@ -25,7 +25,7 @@ public class InventoryReport {
 		gson = new Gson();
 	}
 
-	public void start() {
+	public void start(){
 		service = Executors.newScheduledThreadPool(POOL_SIZE);
 
 		service.scheduleAtFixedRate(() -> {
@@ -50,8 +50,8 @@ public class InventoryReport {
 			e.printStackTrace();
 		}
 	}
-
-	public void stop() throws InterruptedException {
+	
+	public void stop() throws InterruptedException  {
 		System.out.println("[CLIENT " + thing.getID() + " DISCONNECTED]");
 		service.shutdown();
 		service.awaitTermination(SECONDS, TimeUnit.SECONDS);

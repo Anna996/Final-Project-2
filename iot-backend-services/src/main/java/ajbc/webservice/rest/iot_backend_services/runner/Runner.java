@@ -26,32 +26,32 @@ public class Runner {
 	}
 	
 	
-	public static void runAll() throws InterruptedException {
-		List<InventoryReport> clients = new ArrayList<InventoryReport>();
-
-		new DBService().getAllThings().forEach(thing -> {
-			clients.add(new InventoryReport(thing));
-		});
-
-		clients.forEach(client -> client.start());
-		Thread.sleep(30000);
-
-		clients.forEach(client -> {
-			try {
-				client.stop();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		});
-	}
+//	public static void runAll() throws InterruptedException {
+//		List<InventoryReport> clients = new ArrayList<InventoryReport>();
+//
+//		new DBService().getAllThings().forEach(thing -> {
+//			clients.add(new InventoryReport(thing));
+//		});
+//
+//		clients.forEach(client -> client.start());
+//		Thread.sleep(30000);
+//
+//		clients.forEach(client -> {
+//			try {
+//				client.stop();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		});
+//	}
 
 	public static void runOne()  {
 		new DBService().getAllThings().forEach(val -> {
 			thing = val;
 		});
 		InventoryReport client = new InventoryReport(thing);
-		client.start();
 		try {
+			client.start();
 			Thread.sleep(20000);
 			client.stop();
 		} catch (InterruptedException e) {

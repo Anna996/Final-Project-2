@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import ajbc.webservice.rest.iot_backend_services.database.DBMock;
 import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
 import ajbc.webservice.rest.iot_backend_services.models.Device;
 import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
@@ -16,6 +17,7 @@ public class DeviceInventoryMessage extends Thread {
 
 	private Socket socket;
 	private DBService dbService;
+	private static Object obj = new Object();
 
 	public DeviceInventoryMessage(Socket socket) {
 		this.socket = socket;
@@ -31,8 +33,7 @@ public class DeviceInventoryMessage extends Thread {
 			Gson gson = new Gson();
 			IOTThing thing = gson.fromJson(jsonIotThing, IOTThing.class);
 
-			synchronized (dbService.getAllThings()) {
-//				printThings("Before");
+			synchronized (obj) {
 				System.out.println("--------------------------------------");
 				System.out.println("Thread accepted requset from client " + thing.getID());
 				System.out.println("Proccessing requset......");
@@ -40,14 +41,12 @@ public class DeviceInventoryMessage extends Thread {
 				printThings("After update:");
 				System.out.println("--------------------------------------");
 			}
-//			System.out.println("Recieved: " + thing);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// TODO handle exception !
 	private void updateDB(IOTThing thing) {
 		try {
 			dbService.updateDB(thing);

@@ -28,7 +28,7 @@ public class DeviceResource {
 		return Response.ok().entity(devices).build();
 	}
 
-	// starts with id: Device6 (0-5 are default and not part of the map)
+	// starts with id: Device5 (0-4 are default and not part of the map)
 	@GET
 	@Path("/{id}")
 	public Response getDeviceById(@PathParam("id") String uuidNAME) {

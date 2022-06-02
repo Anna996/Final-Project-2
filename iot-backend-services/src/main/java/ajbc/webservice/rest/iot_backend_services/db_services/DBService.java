@@ -39,16 +39,16 @@ public class DBService {
 	private void updateDevices() {
 		devices = database.getDevices();
 	}
-	
+
 	public Device getRandomDevice() {
 		return defaultDevices.get(random.nextInt(defaultDevices.size()));
 	}
 
-	public void updateDB(IOTThing newThing) throws RuntimeException {
+	public void updateDB(IOTThing newThing) throws MissingDataException {
 		IOTThing prevThing = things.get(newThing.getID());
 
 		if (prevThing == null) {
-			throw new RuntimeException("");
+			throw new MissingDataException("IOTThing", "UUID: " + newThing.getID());
 		}
 
 		newThing.getDevices().forEach(device -> {

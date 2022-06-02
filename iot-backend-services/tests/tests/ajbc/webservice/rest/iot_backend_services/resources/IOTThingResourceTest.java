@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import ajbc.webservice.rest.iot_backend_services.database.DBMock;
+import ajbc.webservice.rest.iot_backend_services.exceptions.MissingDataException;
 import ajbc.webservice.rest.iot_backend_services.filter_beans.FilterBean;
 import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
 import ajbc.webservice.rest.iot_backend_services.models.Type;
@@ -37,10 +38,23 @@ class IOTThingResourceTest {
 		acutal = resource.getAllThings(filterBean);
 		assertEquals(200, acutal.getStatus());
 		assertEquals(things, acutal.getEntity());
+		
+		filterBean.setType(Type.SENSOR);
+		acutal = resource.getAllThings(filterBean);
+		assertEquals(200, acutal.getStatus());
+		assertEquals(new ArrayList<>(), acutal.getEntity());
 	}
 
 	@Test
 	void testGetThingById() {
-//		fail("Not yet implemented");
+		Response acutalGood = resource.getThingById("Thing0");
+		assertEquals(200, acutalGood.getStatus());
+		
+		IOTThing thing = (IOTThing) acutalGood.getEntity();
+		assertEquals(Type.CONTROLLER, thing.getType());
+		assertEquals("model A", thing.getModel());
+		assertEquals("manufacturer A", thing.getManufacturer());
+		
+		assertThrows( MissingDataException.class, ()-> resource.getThingById("Thing8"));
 	}
 }

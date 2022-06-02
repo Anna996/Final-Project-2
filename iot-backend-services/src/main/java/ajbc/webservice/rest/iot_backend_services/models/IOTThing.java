@@ -65,7 +65,7 @@ public class IOTThing extends Hardware {
 		} else {
 			numOFDevices = 1 + random.nextInt(devices.size() - 1);
 			for (int i = 0; i < numOFDevices; i++) {
-				devices.remove(i);
+				devices.remove(0);
 				System.out.println("client removed device");
 			}
 		}
