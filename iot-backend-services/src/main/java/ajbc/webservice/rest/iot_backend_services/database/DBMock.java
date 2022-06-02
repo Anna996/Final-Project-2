@@ -1,8 +1,6 @@
 package ajbc.webservice.rest.iot_backend_services.database;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -81,8 +79,8 @@ public class DBMock {
 	public synchronized void replaceThing(IOTThing thing) {
 		things.replace(thing.getID(), thing);
 	}
-
-	public static void main(String[] args) {
-		DBMock.getInstance().things.forEach((uuid, thing) -> System.out.println(thing));
+	
+	public synchronized void addThing(IOTThing thing) {
+		things.put(thing.getID(), thing);
 	}
 }

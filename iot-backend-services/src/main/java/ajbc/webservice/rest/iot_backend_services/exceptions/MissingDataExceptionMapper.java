@@ -7,11 +7,11 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class MissingDataExceptionMapper implements ExceptionMapper<MissingDataException>{
+public class MissingDataExceptionMapper implements ExceptionMapper<MissingDataException> {
 
 	@Override
 	public Response toResponse(MissingDataException exception) {
-		ErrorMessage errorMessage = new ErrorMessage(exception.getObjType(), exception.getNameId(), exception.getMessage(),Status.NOT_FOUND);
+		ErrorMessage errorMessage = new ErrorMessage(exception.getObjType(), exception.getNameId(),exception.getMessage(), Status.NOT_FOUND);
 		return Response.status(Status.NOT_FOUND).entity(errorMessage).build();
 	}
 }

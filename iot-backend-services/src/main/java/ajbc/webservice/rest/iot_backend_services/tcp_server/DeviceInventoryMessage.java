@@ -13,7 +13,7 @@ import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
 import ajbc.webservice.rest.iot_backend_services.models.Device;
 import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
 
-public class DeviceInventoryMessage extends Thread {
+public class DeviceInventoryMessage implements Runnable {
 
 	private Socket socket;
 	private DBService dbService;

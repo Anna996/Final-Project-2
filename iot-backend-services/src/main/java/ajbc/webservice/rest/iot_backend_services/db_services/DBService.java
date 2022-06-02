@@ -44,13 +44,18 @@ public class DBService {
 		return defaultDevices.get(random.nextInt(defaultDevices.size()));
 	}
 
-	public void updateDB(IOTThing newThing) throws MissingDataException {
+	public void updateDB(IOTThing newThing) {
 		IOTThing prevThing = things.get(newThing.getID());
 
 		if (prevThing == null) {
-			throw new MissingDataException("IOTThing", "UUID: " + newThing.getID());
+			System.out.println("Doesnt exsit in the database... adding to database....");
+			addNewThing(newThing);
+		} else {
+			updateThing(prevThing, newThing);
 		}
+	}
 
+	private void updateThing(IOTThing prevThing, IOTThing newThing) {
 		newThing.getDevices().forEach(device -> {
 			if (!prevThing.getDevices().contains(device)) {
 				database.addDevice(device);
@@ -111,13 +116,14 @@ public class DBService {
 			list = list.stream().filter(hardware -> hardware.getType() != null)
 					.filter(hardware -> hardware.getType().equals(type)).collect(Collectors.toList());
 		}
-
+		
 		if (filter.getModel() != null) {
 			String model = filter.getModel();
 
 			list = list.stream().filter(hardware -> hardware.getModel() != null)
 					.filter(hardware -> hardware.getModel().equals(model)).collect(Collectors.toList());
 		}
+		
 		if (filter.getManufacturer() != null) {
 			String manufacturer = filter.getManufacturer();
 
@@ -135,5 +141,18 @@ public class DBService {
 		}
 
 		return getThingById(id).getDevices();
+	}
+
+	public IOTThing createNewThing(Type controller, String model, String manufacturer) {
+		IOTThing thing = new IOTThing(controller, model, manufacturer);
+		database.addThing(thing);
+		updateThings();
+		return thing;
+	}
+
+	private void addNewThing(IOTThing thing) {
+		database.addThing(thing);
+		thing.getDevices().forEach(device -> database.addDevice(device));
+		updateThings();
 	}
 }

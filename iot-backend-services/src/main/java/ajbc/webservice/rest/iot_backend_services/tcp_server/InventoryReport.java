@@ -28,6 +28,8 @@ public class InventoryReport {
 	public void start(){
 		service = Executors.newScheduledThreadPool(POOL_SIZE);
 
+		System.out.println("[ Client Started running ]");
+		
 		service.scheduleAtFixedRate(() -> {
 			createReport();
 			transmitReport();

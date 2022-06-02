@@ -31,8 +31,8 @@ public class DeviceResource {
 	// starts with id: Device5 (0-4 are default and not part of the map)
 	@GET
 	@Path("/{id}")
-	public Response getDeviceById(@PathParam("id") String uuidNAME) {
-		Device device = dbService.getDeviceByID(uuidNAME);
+	public Response getDeviceById(@PathParam("id") String UUIDName) {
+		Device device = dbService.getDeviceByID(UUIDName);
 		return Response.ok().entity(device).build();
 	}
 }
