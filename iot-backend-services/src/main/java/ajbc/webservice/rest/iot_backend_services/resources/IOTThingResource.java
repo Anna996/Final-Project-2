@@ -1,10 +1,13 @@
-package resources;
+package ajbc.webservice.rest.iot_backend_services.resources;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import db_services.DBService;
-import filter_beans.FilterBean;
+import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
+import ajbc.webservice.rest.iot_backend_services.filter_beans.FilterBean;
+import ajbc.webservice.rest.iot_backend_services.models.Hardware;
+import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
+import ajbc.webservice.rest.iot_backend_services.models.Type;
 import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -13,9 +16,6 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import models.Hardware;
-import models.IOTThing;
-import models.Type;
 
 @Path("things")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,7 +25,6 @@ public class IOTThingResource {
 
 	public IOTThingResource() {
 		this.dbService = new DBService();
-		;
 	}
 
 	@GET

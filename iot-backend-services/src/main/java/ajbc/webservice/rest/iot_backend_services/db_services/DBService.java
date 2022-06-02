@@ -1,29 +1,35 @@
-package db_services;
+package ajbc.webservice.rest.iot_backend_services.db_services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import database.DBMock;
-import filter_beans.FilterBean;
-import models.Device;
-import models.Hardware;
-import models.IOTThing;
-import models.Type;
+import ajbc.webservice.rest.iot_backend_services.database.DBMock;
+import ajbc.webservice.rest.iot_backend_services.exceptions.MissingDataException;
+import ajbc.webservice.rest.iot_backend_services.filter_beans.FilterBean;
+import ajbc.webservice.rest.iot_backend_services.models.Device;
+import ajbc.webservice.rest.iot_backend_services.models.Hardware;
+import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
+import ajbc.webservice.rest.iot_backend_services.models.Type;
 
 public class DBService {
 
 	private DBMock database;
 	private Map<UUID, IOTThing> things;
 	private Map<UUID, Device> devices;
+	private Random random;
+	private List<Device> defaultDevices;
 
 	public DBService() {
 		database = DBMock.getInstance();
 		updateThings();
 		updateDevices();
+		random = new Random();
+		defaultDevices = database.getDefaultDevices();
 	}
 
 	private void updateThings() {
@@ -33,9 +39,11 @@ public class DBService {
 	private void updateDevices() {
 		devices = database.getDevices();
 	}
+	
+	public Device getRandomDevice() {
+		return defaultDevices.get(random.nextInt(defaultDevices.size()));
+	}
 
-	// TODO handle exception
-	// TODO add lock
 	public void updateDB(IOTThing newThing) throws RuntimeException {
 		IOTThing prevThing = things.get(newThing.getID());
 
@@ -66,18 +74,18 @@ public class DBService {
 	public List<IOTThing> getAllThings() {
 		return new ArrayList<IOTThing>(things.values());
 	}
-	
+
 	private UUID parseID(String id) {
 		return UUID.nameUUIDFromBytes(id.getBytes());
 	}
 
-	public IOTThing getThingById(String id) throws RuntimeException {
+	public IOTThing getThingById(String id) throws MissingDataException {
 		IOTThing thing = things.get(parseID(id));
 
 		if (thing == null) {
-			throw new RuntimeException("");
+			throw new MissingDataException("IOTThing", id);
 		}
-		
+
 		return thing;
 	}
 
@@ -85,11 +93,11 @@ public class DBService {
 		return new ArrayList<Device>(devices.values());
 	}
 
-	public Device getDeviceByID(String id) {
+	public Device getDeviceByID(String id) throws MissingDataException {
 		Device device = devices.get(parseID(id));
 
 		if (device == null) {
-			throw new RuntimeException();
+			throw new MissingDataException("Device", id);
 		}
 
 		return device;
@@ -120,13 +128,12 @@ public class DBService {
 		return list;
 	}
 
-	// TODO Exception
 	public List<Device> getDevicesByThingId(String id) {
 
 		if (id == null) {
 			return getAllDevices();
 		}
 
-		return things.get(parseID(id)).getDevices();
+		return getThingById(id).getDevices();
 	}
 }

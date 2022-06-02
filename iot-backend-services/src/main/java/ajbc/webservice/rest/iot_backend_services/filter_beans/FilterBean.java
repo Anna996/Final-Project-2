@@ -1,7 +1,7 @@
-package filter_beans;
+package ajbc.webservice.rest.iot_backend_services.filter_beans;
 
+import ajbc.webservice.rest.iot_backend_services.models.Type;
 import jakarta.ws.rs.QueryParam;
-import models.Type;
 
 public class FilterBean {
 

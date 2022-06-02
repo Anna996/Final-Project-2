@@ -1,10 +1,12 @@
-package models;
+package ajbc.webservice.rest.iot_backend_services.models;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+
+import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
 
 public class IOTThing extends Hardware {
 
@@ -26,7 +28,6 @@ public class IOTThing extends Hardware {
 		devices = new ArrayList<Device>();
 	}
 
-	// TODO fix the bug
 	private synchronized UUID genarateUUID() {
 		String name = UUID_NAME + counter++;
 		return UUID.nameUUIDFromBytes(name.getBytes());
@@ -50,20 +51,22 @@ public class IOTThing extends Hardware {
 
 	public void simulateInventoryChange() {
 		Random random = new Random();
-		boolean toAdd = random.nextBoolean();
+		boolean toAdd = devices.size() < 2 ? true : random.nextBoolean();
 		int numOFDevices;
+		DBService dbService = new DBService();
 
 		if (toAdd) {
 			numOFDevices = 1 + random.nextInt(MAX_DEVICES);
 			for (int i = 0; i < numOFDevices; i++) {
-				devices.add(new Device());
-				System.out.println("added");
+				Device device = dbService.getRandomDevice();
+				devices.add(Device.copyDevice(device));
+				System.out.println("client added device");
 			}
 		} else {
 			numOFDevices = 1 + random.nextInt(devices.size() - 1);
 			for (int i = 0; i < numOFDevices; i++) {
 				devices.remove(i);
-				System.out.println("removed");
+				System.out.println("client removed device");
 			}
 		}
 

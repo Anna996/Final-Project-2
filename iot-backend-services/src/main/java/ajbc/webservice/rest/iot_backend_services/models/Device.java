@@ -1,4 +1,4 @@
-package models;
+package ajbc.webservice.rest.iot_backend_services.models;
 
 import java.util.Objects;
 import java.util.Random;
@@ -23,7 +23,6 @@ public class Device extends Hardware {
 		setReading(0);
 	}
 
-	// TODO fix the bug
 	private synchronized UUID genarateUUID() {
 		String name = UUID_NAME + counter++;
 		return UUID.nameUUIDFromBytes(name.getBytes());
@@ -43,6 +42,10 @@ public class Device extends Hardware {
 
 	public void simulateReading() {
 		setReading(new Random().nextDouble());
+	}
+
+	public static Device copyDevice(Device original) {
+		return new Device(original.getType(), original.getModel(), original.getManufacturer());
 	}
 
 	@Override

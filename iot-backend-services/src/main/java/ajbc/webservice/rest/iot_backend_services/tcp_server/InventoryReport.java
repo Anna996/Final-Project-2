@@ -1,4 +1,4 @@
-package tcp_server;
+package ajbc.webservice.rest.iot_backend_services.tcp_server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 
-import models.IOTThing;
+import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
 
 public class InventoryReport {
 	private IOTThing thing;

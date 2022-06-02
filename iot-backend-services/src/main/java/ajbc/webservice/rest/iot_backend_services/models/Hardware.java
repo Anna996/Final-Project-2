@@ -1,4 +1,4 @@
-package models;
+package ajbc.webservice.rest.iot_backend_services.models;
 
 public abstract class Hardware {
 

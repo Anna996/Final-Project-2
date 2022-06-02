@@ -1,14 +1,16 @@
-package runner;
+package ajbc.webservice.rest.iot_backend_services.runner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import database.DBMock;
-import models.IOTThing;
-import tcp_server.InventoryReport;
-import tcp_server.InventoryServer;
+import ajbc.webservice.rest.iot_backend_services.database.DBMock;
+import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
+import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
+import ajbc.webservice.rest.iot_backend_services.tcp_server.InventoryReport;
+import ajbc.webservice.rest.iot_backend_services.tcp_server.InventoryServer;
 
 public class Runner {
 	static IOTThing thing;
@@ -18,14 +20,16 @@ public class Runner {
 		ExecutorService executorService = Executors.newFixedThreadPool(POOL_SIZE);
 		InventoryServer server = new InventoryServer();
 		
+		// TODO fix problem....
 		executorService.execute(()-> server.run());
 		executorService.execute(()-> runOne());
 	}
 	
+	
 	public static void runAll() throws InterruptedException {
 		List<InventoryReport> clients = new ArrayList<InventoryReport>();
 
-		DBMock.getInstance().getThings().forEach((id, thing) -> {
+		new DBService().getAllThings().forEach(thing -> {
 			clients.add(new InventoryReport(thing));
 		});
 
@@ -42,7 +46,7 @@ public class Runner {
 	}
 
 	public static void runOne()  {
-		DBMock.getInstance().getThings().forEach((id, val) -> {
+		new DBService().getAllThings().forEach(val -> {
 			thing = val;
 		});
 		InventoryReport client = new InventoryReport(thing);

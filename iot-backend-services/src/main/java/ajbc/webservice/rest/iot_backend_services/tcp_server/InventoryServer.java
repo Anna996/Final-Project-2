@@ -1,4 +1,4 @@
-package tcp_server;
+package ajbc.webservice.rest.iot_backend_services.tcp_server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import database.DBMock;
+import ajbc.webservice.rest.iot_backend_services.database.DBMock;
 
 public class InventoryServer {
 	private final int PORT = 8090;

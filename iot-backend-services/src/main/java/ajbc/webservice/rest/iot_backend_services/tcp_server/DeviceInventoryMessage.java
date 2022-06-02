@@ -1,4 +1,4 @@
-package tcp_server;
+package ajbc.webservice.rest.iot_backend_services.tcp_server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
-import db_services.DBService;
-import models.Device;
-import models.IOTThing;
+import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
+import ajbc.webservice.rest.iot_backend_services.models.Device;
+import ajbc.webservice.rest.iot_backend_services.models.IOTThing;
 
 public class DeviceInventoryMessage extends Thread {
 

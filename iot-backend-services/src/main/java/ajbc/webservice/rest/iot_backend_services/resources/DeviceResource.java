@@ -1,17 +1,17 @@
-package resources;
+package ajbc.webservice.rest.iot_backend_services.resources;
 
 import java.util.List;
 
-import db_services.DBService;
-import filter_beans.FilterBean;
+import ajbc.webservice.rest.iot_backend_services.db_services.DBService;
+import ajbc.webservice.rest.iot_backend_services.filter_beans.FilterBean;
+import ajbc.webservice.rest.iot_backend_services.models.Device;
+import ajbc.webservice.rest.iot_backend_services.models.Hardware;
 import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
-import models.Device;
-import models.Hardware;
 
 @Path("/devices")
 public class DeviceResource {
@@ -19,7 +19,6 @@ public class DeviceResource {
 
 	public DeviceResource() {
 		this.dbService = new DBService();
-		;
 	}
 
 	@GET
@@ -29,6 +28,7 @@ public class DeviceResource {
 		return Response.ok().entity(devices).build();
 	}
 
+	// starts with id: Device6 (0-5 are default and not part of the map)
 	@GET
 	@Path("/{id}")
 	public Response getDeviceById(@PathParam("id") String uuidNAME) {
